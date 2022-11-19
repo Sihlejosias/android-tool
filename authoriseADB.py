@@ -6,20 +6,26 @@
 import subprocess, platform
 
 def sdk_checker():
+    from Droidk import start
     adb_fastboot = input("adb or fastboot: ")
     if adb_fastboot == "adb" or adb_fastboot == "fastboot":
         command = "where" if platform.system() == "Windows" else 'which'
         sdk_check = subprocess.run((command, adb_fastboot), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if sdk_check.returncode == 0:
-            if adb_fastboot == "adb":
-                subprocess.run(["adb", "devices"])
-            else:
-                subprocess.run(["fastboot", "devices"])            
+            if adb_fastboot == "adb" or adb_fastboot == "fastboot":
+                results = subprocess.run([adb_fastboot, "devices"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                if results.returncode == 0:
+                    print(results.stdout)
+                    start()
+                else: 
+                    print(results.stderr)
+                    start()   
         else: 
             print(adb_fastboot, "is not found in your system! Please install Android SDK.")
+            start()
     else: 
         print("ERROR: Please type adb or fastboot to check if  available in system.")
-
+        start()
 
 # import subprocess, platform
 # from tkinter import *
