@@ -2,12 +2,14 @@ from authoriseADB import sdk_checker
 from eraseData import eraseData
 from recovery import recover
 from downgrade import downgrading
+from lollipop import lollipop
+from marshmallow import marsh
 
 def start():   
     print("Welcome to Droid KIT. Let use help you today. Choose option below.\n")
     print("1. Authorise ADB\t\t\t\t", "2. Erase userdata")
     print("3. Flash Custom Recovery\t\t\t", "4. Downgrade to Lollipop")
-    print("5. Reinstall Lollipop\t\t\t\t", "6. Flash Marshmallow")
+    print("5. Flash Lollipop\t\t\t\t", "6. Flash Marshmallow")
     print("7. Install Motorola USB Driver\t\t\t", "8. Wireless APK Sideload(Beta no root)")
     print("9. Root\t\t\t\t\t\t", "10. Exit\n")
 
@@ -23,9 +25,9 @@ def start():
     elif Input == 4:
         downgrading()
     elif Input == 5:
-        print("Option currently not implimented")
+        lollipop()
     elif Input == 6:
-        print("Option currently not implimented")
+        marsh()
     elif Input == 7:
         print("Option currently not implimented")
     elif Input == 8:

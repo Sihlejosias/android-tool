@@ -5,3 +5,8 @@ Android-tool is inspired by DroidKit(https://github.com/AuthenticDuff/DroidKit).
 to run the app:
 
 python Droidk.py
+
+
+WARNNING: 
+    Please note this could brick your device, this is for educational use.
+    
