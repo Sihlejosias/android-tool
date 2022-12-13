@@ -20,9 +20,6 @@ def eraseData():
         else:
             print(oem_unlock.stderr)
             Type = input("Type: system or recovery or userdata: ")
-            Format = run((command.fastboot, "format", Type), stdout=PIPE, stderr=PIPE, text=True)
-            if Format == 0:
-                print(Format.stdout)
-            else:
-                print(Format.stderr)
+            format = run((command.fastboot, "format", Type), stdout=PIPE, stderr=PIPE, text=True)
+            command.con(format)
         start()

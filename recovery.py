@@ -13,52 +13,42 @@ def recover():
 
     version = int(input("Choose what version of TWRP for the following(e.g 1 for TWRP 3.4.5): "))
 
-    def if_else(value):
-        if value.returncode == 0:
-            print(value.stdout)
-            print("All Done :-)")
-            run((command.fastboot, "reboot"))
-        else: 
-            print(value.stderr)
-            print("Failed!! :-(")
-            run((command.fastboot, "reboot"))
-
     if version == 1:
         #Near future have the ability to download and install the custom recovery option and check if available on current directory
         twrp3R1 = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP3.4.5R1.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp3R1.wait()
-        if_else(twrp3R1)
+        command.con(twrp3R1)
     elif version == 2:
         twrp2T = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP2.8.7TESTING.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp2T.wait()
-        if_else(twrp2T)
+        command.con(twrp2T)
     elif version == 3:
         twrp2R2 = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP2.8.7R2.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp2R2.wait()
-        if_else(twrp2R2)
+        command.con(twrp2R2)
     elif version == 4:
         twrp2R3 = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP2.8.7R3.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp2R3.wait()
-        if_else(twrp2R3)
+        command.con(twrp2R3)
     elif version == 5:
         twrp2R4 = Popen((command.fastboot, "flash","recovery","twrp/TWRP2.8.7R4.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting")
         twrp2R4.wait()
-        if_else(twrp2R4)
+        command.con(twrp2R4)
     elif version == 6:
         twrp2R5 = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP2.8.7R5.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp2R5.wait()
-        if_else(twrp2R5)
+        command.con(twrp2R5)
     elif version == 7:
         twrp2R7 = Popen((command.fastboot, "flash", "recovery", "twrp/TWRP2.8.7R7.img"), stdout=PIPE, stderr=PIPE).communicate()
         print("Waiting: ")
         twrp2R7.wait()
-        if_else(twrp2R7)
+        command.con(twrp2R7)
     else: 
         print("Invalid option") 
 

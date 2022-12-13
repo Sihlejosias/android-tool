@@ -15,12 +15,8 @@ def sdk_checker():
         if sdk_check.returncode == 0:
             if adb_fastboot == "adb" or adb_fastboot == "fastboot":
                 results = run([adb_fastboot, "devices"], stdout=PIPE, stderr=PIPE, text=True)
-                if results.returncode == 0:
-                    print(results.stdout, end='')
-                    start()
-                else: 
-                    print(results.stderr)
-                    start()   
+                command.con(results)
+                start()
         else: 
             print(adb_fastboot, "is not found in your system! Please install Android SDK.")
             start()

@@ -1,3 +1,4 @@
+#!/user/bin/env python
 from authoriseADB import sdk_checker
 from eraseData import eraseData
 from recovery import recover

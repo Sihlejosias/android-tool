@@ -16,61 +16,55 @@ def lollipop():
             if bootloader.returncode == 0 and bootloader_q.lower() == "yes":
                 run(("@echo", "off"))
 
-                def con(value):
-                    if value.returncode == 0:
-                        print(value.stdout)
-                    else:
-                        print(value.stderr)
-
                 print("Flasshing partition table....")
                 table_flash = run((command.fastboot, "flash", "partition", "gpt.bin"), stdout=PIPE, stderr=PIPE)
-                con(table_flash)
+                command.con(table_flash)
 
                 print("Flashing bootloader....")
                 bootloader_flash = run((command.fastboot, "flash", "bootloader", "bootloader.img"), stdout=PIPE, stderr=PIPE)
-                con(bootloader_flash)
+                command.con(bootloader_flash)
 
                 print("Flashing boot logo....")
                 logo_flash = run((command.fastboot, "flash", "logo", "logo.bin"), stdout=PIPE, stderr=PIPE)
-                con(logo_flash)
+                command.con(logo_flash)
 
                 print("Flashing boot image....")
                 boot_flash = run((command.fastboot, "flash", "boot", "boot.img"), stdout=PIPE, stderr=PIPE)
-                con(boot_flash)
+                command.con(boot_flash)
 
                 print("Flashing Recovery image....")
                 recovery_flash = run((command.fastboot, "flash", "recovery", "recovery.img"), stdout=PIPE, stderr=PIPE)
-                con(recovery_flash)
+                command.con(recovery_flash)
 
                 print("Flashing System images....")
                 for i in range(7):
                     system_flash = run((command.fastboot, "flash", "system", f"system.img_sparsechunk{i}"), stdout=PIPE, stderr=PIPE)
-                    con(system_flash)
+                    command.con(system_flash)
                 print("System partitions successfully flashed.")
 
                 print("Flasshing modem....")
                 md_flash = run((command.fastboot, "flash", "modem", "NON-HLOS.bin"), stdout=PIPE, stderr=PIPE)
-                con(md_flash)
+                command.con(md_flash)
 
                 print("Erasing old data...")
                 for i in range(1, 3):
                     erase_data = run((command.fastboot, "erase", f"modemst{i}"), stdout=PIPE, stderr=PIPE)
-                    con(erase_data)
+                    command.con(erase_data)
                 print("Old data erased")
 
                 print("Flashing FSG....")
                 fsg_flash = run((command.fastboot, "flash", "fsg", "fsg.mbn"), stdout=PIPE, stderr=PIPE)
-                con(fsg_flash)
+                command.con(fsg_flash)
 
                 print("Erasing cache and userdata....")
                 cache_erase = run((command.fastboot, "erase", "cache"), stdout=PIPE, stderr=PIPE)
-                con(cache_erase)
+                command.con(cache_erase)
                 userdata_erase = run((command.fastboot, "erase", "userdata"), stdout=PIPE, stderr=PIPE)
-                con(userdata_erase)
+                command.con(userdata_erase)
 
                 print("Finishing to install lollipop on your device....")
                 reboot = run((command.fastboot, "reboot"), stdout=PIPE, stderr=PIPE)
-                con(reboot)
+                command.con(reboot)
 
                 print("You have successfully installed lollipop on your device. Enjoy!!! :-)")
 
@@ -79,4 +73,4 @@ def lollipop():
         else:
             print("Please enable usb debugging before you continue....")
     else:
-        print("Choose the correct option nest time.")
+        print("Choose the correct option next time.")
