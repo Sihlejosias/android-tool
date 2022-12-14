@@ -5,6 +5,8 @@ from recovery import recover
 from downgrade import downgrading
 from lollipop import lollipop
 from marshmallow import marsh
+from root import root
+from sideload import load 
 
 def start():   
     print("Welcome to Droid KIT. Let use help you today. Choose option below.\n")
@@ -30,11 +32,11 @@ def start():
     elif Input == 6:
         marsh()
     elif Input == 7:
-        print("Option currently not implimented")
+        print("This feathure will no be implimented soon")
     elif Input == 8:
-        print("Option currently not implimented")
+        load()
     elif Input == 9:
-        print("Option currently not implimented")
+        root()
     else: 
         exit()
 

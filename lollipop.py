@@ -38,7 +38,7 @@ def lollipop():
 
                 print("Flashing System images....")
                 for i in range(7):
-                    system_flash = run((command.fastboot, "flash", "system", f"system.img_sparsechunk{i}"), stdout=PIPE, stderr=PIPE)
+                    system_flash = run((command.fastboot, "flash", "system", f"system.img_sparsechunk.{i}"), stdout=PIPE, stderr=PIPE)
                     command.con(system_flash)
                 print("System partitions successfully flashed.")
 

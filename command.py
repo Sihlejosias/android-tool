@@ -6,7 +6,7 @@ locator = "where" if system() == "Windows" else "which"
 
 def con(value):
     if value.returncode == 0:
-        print(value.stdout)
+        print(value.stdout, end="")
     else:
-        print(value.stderr)
+        print(value.stderr, end="")
 #Add Download command
