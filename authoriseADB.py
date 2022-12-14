@@ -3,7 +3,6 @@
 # Authorises the ADB by checking the availability of USB devices and if they are USB Debugging anebled
 ####
 
-from platform import system
 from subprocess import run, PIPE
 import command
 
