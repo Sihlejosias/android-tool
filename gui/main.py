@@ -26,10 +26,10 @@ def menu():
         label2 = Label(root, text="ADB and FASTBOOT device check")
         label2.pack(pady=9)
 
-        canvas1 = Canvas(root, width=350, height=350)
+        canvas1 = Canvas(root, width=350, height=350, background="Black")
         canvas1.pack(padx=10, pady=10)
 
-        entry1 = Entry(root)
+        entry1 = Entry(root, foreground="white", background="Black", takefocus=True)
         canvas1.create_window(80, 15, window=entry1)
         
         def sdk_checker():
@@ -98,7 +98,7 @@ def menu():
                     fail = Label(root, text=Format.stderr)
                     canvas1.create_window(120, 100, window=fail)
 
-    btn2 = Button(text="Erase Userdate", command=eraseData)
+    btn2 = Button(text="Erase Userdata", command=eraseData)
     btn2.pack()
 
     def customRecovery():
@@ -176,24 +176,98 @@ def menu():
     def downgrade():
         delt()
 
-        label2 = Label(root, text="Downgrade To Lollipo")
+        label2 = Label(root, text="Downgrade To Lollipo") 
         label2.pack(pady=10)
 
-        canvas1 = Canvas(root, width=450, height=350, background="black")
+        canvas1 = Canvas(root, width=450, height=450, background="black")
         canvas1.pack(pady=10, padx=10)
 
-        label4 = Label(root, text=">> ", background="black", fg="white")
-        canvas1.create_window(15, 15, window=label4)
-        label3 = Label(root, text="Starting! Please don't switch off the devices or it may brick you phone.", fg="white", background="black")
-        canvas1.create_window(220, 16, window=label3)
+        label3 = Label(root, text=">> Starting! Please don't switch off the devices or it may brick you phone.", background="black", fg="white")
+        canvas1.create_window(201, 15, window=label3)
+        label4 = Label(root, text=">> Entering Bootloader mode...", background="black", fg="white")
+        canvas1.create_window(90, 35, window=label4)
         label5 = Label(root, text=">>", background="black", fg="white")
-        canvas1.create_window(15, 35, window=label5)
+        canvas1.create_window(14, 55, window=label5)
 
+        bootloader = run((command.adb, "reboot-bootloader"), stdout=PIPE, stderr=PIPE, text=True)
+        if bootloader.returncode == 0:
+            done = Label(root, text="Success")
+            canvas1.create_window(45, 55, window=done)
+
+            def con(value):
+                if value.returncode != 0:
+                    fail = Label(root, text=value.stderr)
+                    canvas1.create_window(45, 65, window=fail)
+
+            logo_flash = run((command.fastboot, "flash", "logo", "logo.bin"), stderr=PIPE, text=True)
+            con(logo_flash)
+            
+            boot_flash = run((command.fastboot, "flash", "boot", "boot.img"), stderr=PIPE, text=True)
+            con(boot_flash)
+
+            recovery_flash = run((command.fastboot, "flash", "recovery", "recovery.img"), stderr=PIPE, text=True)
+            con(recovery_flash)
+
+            for i in range(7):
+                system_flash = run((command.fastboot, "flash", "system", f"system.img_sparsechunk.{i}"), stderr=PIPE, text=True)
+                con(system_flash)
+
+            modem_flash = run((command.fastboot, "flash", "modem", "NON-HLOS.bin"), stderr=PIPE, text=True)
+            con(modem_flash)
+
+            for j in range(1, 3):
+                md_erase = run((command.fastboot, "erase", f"modemst{j}"), stderr=PIPE, text=True)
+                con(md_erase)
+
+            fsg_flash = run((command.fastboot, "flash", "fsg", "fsg.mbn"), stderr=PIPE, text=True)
+            con(fsg_flash)
+
+            cache_erase = run((command.fastboot, "erase", "cache"), stderr=PIPE, text=True)
+            con(cache_erase)
+
+            userdata_erase = run((command.fastboot, "erase", "userdata"), stderr=PIPE, text=True)
+            con(userdata_erase)
+
+            reboot = run((command.fastboot, "reboot"), stdout=PIPE, stderr=PIPE, text=True)
+            if reboot.returncode == 0:
+                sucess = Label(root, text=reboot.stdout)
+                canvas1.create_window(45, 65, window=sucess)
+            else:
+                fail = Label(root, text=reboot.stderr)
+                canvas1.create_window(45, 65, window=fail) 
+
+        else:
+            not_done = Label(root, text=bootloader.stderr, background="black", fg="white")
+            canvas1.create_window(115, 64, window=not_done)
 
     btn4 = Button(text="Downgrade to Lollipop", command=downgrade)
     btn4.pack()
 
-    btn5 = Button(text="Flash Lollipop", command=exit)
+    def uptololli():
+        delt()
+
+        label2 = Label(root, text="Flash to Lollipop")
+        label2.pack(pady=10)
+
+        canvas1 = Canvas(root, width=450, height=450, background="black")
+        canvas1.pack(pady=10, padx=10)
+
+        label3 = Label(root, text=">> Starting! Please don't switch off the devices or it may brick you phone.", background="black", fg="white")
+        canvas1.create_window(201, 15, window=label3)
+        label4 = Label(root, text=">> Entering Bootloader mode...", background="black", fg="white")
+        canvas1.create_window(90, 35, window=label4)
+        label5 = Label(root, text=">>", background="black", fg="white")
+        canvas1.create_window(14, 55, window=label5)
+
+        bootloader = run((command.adb, "reboot-bootloader"), stdout=PIPE, stderr=PIPE, text=True)
+
+        if bootloader.returncode == 0:
+            pass
+        else:
+            fail = Label(root, text="Failed to enter bootloader....", background="Black", foreground="white")
+            canvas1.create_window(100, 55, window=fail)
+
+    btn5 = Button(text="Flash Lollipop", command=uptololli)
     btn5.pack()
 
     btn6 = Button(text="Flash Marshmallow", command=exit)
